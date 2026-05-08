@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog – Podcast Coffee Time Nicaragua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #080808;
+      --bg-2:     #0f0f0f;
+      --bg-3:     #181818;
+      --gold:     #c9a84c;
+      --gold-lt:  #e8c96d;
+      --gold-dk:  #a07830;
+      --text:     #f0ece4;
+      --muted:    #777;
+      --border:   rgba(201,168,76,.18);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      background: rgba(8,8,8,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .78rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-cta {
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--gold);
+      padding: .45rem 1.1rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--gold-lt); }
+
+    /* ── HERO ── */
+    .blog-hero {
+      padding: 130px 5vw 60px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp .6s .1s forwards;
+    }
+    .hero-label::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 1px;
+      background: var(--gold);
+    }
+    .blog-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      max-width: 700px;
+      opacity: 0;
+      animation: fadeUp .7s .2s forwards;
+    }
+    .blog-hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      margin-top: 1.2rem;
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      opacity: 0;
+      animation: fadeUp .7s .35s forwards;
+    }
+
+    /* ── FILTER TAGS ── */
+    .filters {
+      padding: 1.8rem 5vw;
+      display: flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+    }
+    .tag {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .35rem .9rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tag:hover, .tag.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201,168,76,.06);
+    }
+
+    /* ── FEATURED ARTICLE ── */
+    .featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp .8s .4s forwards;
+    }
+    @media (max-width: 768px) {
+      .featured { grid-template-columns: 1fr; }
+      .featured-img { height: 220px; }
+    }
+    .featured-img {
+      background: var(--bg-3);
+      min-height: 400px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .featured-img-inner {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #1a1208 0%, #0f0c06 40%, #181510 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .featured-img-inner::after {
+      content: '☕';
+      font-size: 5rem;
+      opacity: .12;
+      position: absolute;
+    }
+    .featured-badge {
+      position: absolute;
+      top: 1.5rem; left: 1.5rem;
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--bg);
+      padding: .3rem .7rem;
+      font-weight: 500;
+    }
+    .featured-body {
+      padding: 3rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--bg-2);
+    }
+    .article-meta {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .featured-body h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+    .featured-body p {
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.75;
+      margin-bottom: 1.8rem;
+    }
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      transition: gap .2s;
+    }
+    .read-more:hover { gap: .9rem; }
+    .read-more::after { content: '→'; }
+
+    /* ── GRID DE ARTÍCULOS ── */
+    .articles-section {
+      padding: 4rem 5vw;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+    }
+    .article-card {
+      background: var(--bg);
+      padding: 2rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+      transition: background .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .article-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s;
+    }
+    .article-card:hover { background: var(--bg-2); }
+    .article-card:hover::before { transform: scaleX(1); }
+    .card-category {
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+    .card-excerpt {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: .8rem;
+      border-top: 1px solid var(--border);
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .05em;
+    }
+    .card-arrow {
+      color: var(--gold);
+      font-size: 1rem;
+      transition: transform .2s;
+    }
+    .article-card:hover .card-arrow { transform: translateX(4px); }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      margin: 0 5vw 4rem;
+      padding: 3rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--bg-2) 0%, rgba(201,168,76,.04) 100%);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .newsletter { grid-template-columns: 1fr; }
+    }
+    .newsletter h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: .4rem;
+    }
+    .newsletter h3 span { color: var(--gold); font-style: italic; }
+    .newsletter p { font-size: .85rem; color: var(--muted); }
+    .nl-form { display: flex; gap: .5rem; }
+    .nl-form input {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .7rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      outline: none;
+      width: 220px;
+      transition: border-color .2s;
+    }
+    .nl-form input:focus { border-color: var(--gold); }
+    .nl-form input::placeholder { color: var(--muted); }
+    .nl-form button {
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      padding: .7rem 1.4rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background .2s;
+    }
+    .nl-form button:hover { background: var(--gold-lt); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .article-card {
+      opacity: 0;
+      animation: fadeUp .6s forwards;
+    }
+    .article-card:nth-child(1) { animation-delay: .1s; }
+    .article-card:nth-child(2) { animation-delay: .2s; }
+    .article-card:nth-child(3) { animation-delay: .3s; }
+    .article-card:nth-child(4) { animation-delay: .4s; }
+    .article-card:nth-child(5) { animation-delay: .5s; }
+    .article-card:nth-child(6) { animation-delay: .6s; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="web-podcastcoffeetime-nicaragua.html" class="nav-logo">Coffee<span>Time</span></a>
+    <ul class="nav-links">
+      <li><a href="web-podcastcoffeetime-nicaragua.html#nosotros">Nosotros</a></li>
+      <li><a href="web-podcastcoffeetime-nicaragua.html#episodios">Episodios</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="web-podcastcoffeetime-nicaragua.html#contacto">Contacto</a></li>
+    </ul>
+    <a href="web-podcastcoffeetime-nicaragua.html#colaborar" class="nav-cta">Colaborar</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="blog-hero">
+    <div class="hero-label">Nicaragua · Desde 2018</div>
+    <h1>Ideas, cultura<br>y <em>mucha música</em></h1>
+    <p class="hero-sub">Artículos sobre emprendimiento, podcasting, música nicaragüense y todo lo que mueve a nuestra comunidad.</p>
+  </section>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <button class="tag active">Todo</button>
+    <button class="tag">Música</button>
+    <button class="tag">Emprendimiento</button>
+    <button class="tag">Podcasting</button>
+    <button class="tag">Cultura</button>
+    <button class="tag">Entrevistas</button>
+  </div>
+
+  <!-- ARTÍCULO DESTACADO -->
+  <article class="featured">
+    <div class="featured-img">
+      <div class="featured-img-inner"></div>
+      <span class="featured-badge">Destacado</span>
+    </div>
+    <div class="featured-body">
+      <div class="article-meta">Podcasting · 7 mayo 2026</div>
+      <h2>Cómo construimos una comunidad de 146K desde Nicaragua</h2>
+      <p>Seis años de conversaciones auténticas, café y mucha música. Esta es la historia de cómo Coffee Time se convirtió en el podcast que mueve a Nicaragua — sin grandes presupuestos, solo con pasión y constancia.</p>
+      <a href="#" class="read-more">Leer artículo</a>
+    </div>
+  </article>
+
+  <!-- GRID DE ARTÍCULOS -->
+  <section class="articles-section">
+    <div class="section-title">Últimos artículos</div>
+    <div class="articles-grid">
+
+      <a href="#" class="article-card">
+        <div class="card-category">Música</div>
+        <h3 class="card-title">Los artistas nicaragüenses que debes escuchar en 2026</h3>
+        <p class="card-excerpt">Una selección de los músicos locales que están rompiendo barreras y llevando el sonido de Nicaragua al mundo.</p>
+        <div class="card-footer">
+          <span>5 mayo 2026 · 4 min</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="#" class="article-card">
+        <div class="card-category">Emprendimiento</div>
+        <h3 class="card-title">Monetizar un podcast en Latinoamérica: lo que nadie te dice</h3>
+        <p class="card-excerpt">Desde las primeras colaboraciones hasta los patrocinios actuales — lecciones aprendidas en el camino real.</p>
+        <div class="card-footer">
+          <span>2 mayo 2026 · 6 min</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="#" class="article-card">
+        <div class="card-category">Entrevistas</div>
+        <h3 class="card-title">Gaby y César: por qué el café es nuestra metáfora favorita</h3>
+        <p class="card-excerpt">Una conversación íntima sobre los inicios, los momentos difíciles y por qué seguimos grabando después de 118 episodios.</p>
+        <div class="card-footer">
+          <span>28 abr 2026 · 5 min</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="#" class="article-card">
+        <div class="card-category">Cultura</div>
+        <h3 class="card-title">La escena creativa de Managua que está cambiando el juego</h3>
+        <p class="card-excerpt">Diseñadores, músicos, podcasters y creadores digitales que están construyendo una nueva narrativa nicaragüense.</p>
+        <div class="card-footer">
+          <span>22 abr 2026 · 7 min</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="#" class="article-card">
+        <div class="card-category">Podcasting</div>
+        <h3 class="card-title">Equipo mínimo para empezar tu podcast hoy mismo</h3>
+        <p class="card-excerpt">No necesitas un estudio profesional. Aquí el setup real que usamos al principio — y lo que realmente importa.</p>
+        <div class="card-footer">
+          <span>15 abr 2026 · 3 min</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="#" class="article-card">
+        <div class="card-category">Emprendimiento</div>
+        <h3 class="card-title">Instagram vs Facebook: dónde está realmente tu audiencia en 2026</h3>
+        <p class="card-excerpt">Análisis basado en nuestra propia comunidad de 146K en Facebook y 12.5K en Instagram — los números sorprenden.</p>
+        <div class="card-footer">
+          <span>10 abr 2026 · 5 min</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <div>
+      <h3>Recibe los artículos en tu <span>correo</span></h3>
+      <p>Sin spam. Solo contenido que vale la pena leer, una vez por semana.</p>
+    </div>
+    <div class="nl-form">
+      <input type="email" placeholder="tu@correo.com">
+      <button type="button">Suscribirme</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 Podcast Coffee Time Nicaragua</span>
+    <span>Hecho con ☕ y pasión desde Managua</span>
+  </footer>
+
+  <script>
+    // Filtros de categoría
+    document.querySelectorAll('.tag').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tag').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

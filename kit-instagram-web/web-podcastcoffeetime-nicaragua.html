@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcast Coffee Time Nicaragua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #080808;
+      --bg-2:     #0f0f0f;
+      --bg-3:     #181818;
+      --gold:     #c9a84c;
+      --gold-lt:  #e8c96d;
+      --gold-dk:  #a07830;
+      --text:     #f0ece4;
+      --muted:    #777;
+      --border:   rgba(201,168,76,.18);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:4px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; width:100%; z-index:999;
+      padding:1.2rem 3rem;
+      display:flex; justify-content:space-between; align-items:center;
+      transition:all .3s;
+    }
+    nav.scrolled {
+      background:rgba(8,8,8,.96);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-logo {
+      font-family:'Cormorant Garant',serif;
+      font-size:1.25rem; color:var(--gold);
+      text-decoration:none; letter-spacing:.05em;
+    }
+    .nav-logo span { color:var(--text); }
+    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+    .nav-links a {
+      color:var(--muted); text-decoration:none;
+      font-size:.82rem; font-weight:500;
+      letter-spacing:.1em; text-transform:uppercase;
+      transition:color .3s;
+    }
+    .nav-links a:hover { color:var(--gold); }
+    .nav-cta {
+      border:1px solid var(--gold); color:var(--gold);
+      padding:.5rem 1.5rem; border-radius:2px;
+      font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
+      text-decoration:none; transition:all .3s;
+    }
+    .nav-cta:hover { background:var(--gold); color:var(--bg); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height:100vh;
+      display:flex; align-items:center;
+      position:relative; overflow:hidden;
+      padding:6rem 3rem 4rem;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 60% 70% at 75% 50%, rgba(201,168,76,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 20% 80%, rgba(201,168,76,.04) 0%, transparent 60%);
+    }
+    .hero-grain {
+      position:absolute; inset:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    }
+    .hero-content {
+      max-width:1200px; margin:0 auto; width:100%;
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:4rem; align-items:center;
+      position:relative; z-index:2;
+    }
+    .hero-label {
+      font-size:.72rem; font-weight:600;
+      letter-spacing:.3em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:1.5rem;
+      display:flex; align-items:center; gap:1rem;
+    }
+    .hero-label::before {
+      content:''; display:inline-block;
+      width:40px; height:1px; background:var(--gold);
+    }
+    .hero-title {
+      font-family:'Cormorant Garant',serif;
+      font-size:clamp(3rem,5.5vw,5.5rem);
+      line-height:1.05; font-weight:600;
+      letter-spacing:-.01em; margin-bottom:1.5rem;
+    }
+    .hero-title .gold { color:var(--gold); }
+    .hero-desc {
+      color:var(--muted); font-size:1.05rem;
+      line-height:1.85; margin-bottom:2.5rem; max-width:480px;
+    }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
+    .btn-primary {
+      background:linear-gradient(135deg,var(--gold),var(--gold-dk));
+      color:var(--bg); padding:.9rem 2.2rem;
+      border-radius:2px; text-decoration:none;
+      font-weight:600; font-size:.88rem; letter-spacing:.04em;
+      transition:all .3s; display:inline-flex; align-items:center; gap:.5rem;
+    }
+    .btn-primary:hover {
+      transform:translateY(-2px);
+      box-shadow:0 12px 32px rgba(201,168,76,.3);
+    }
+    .btn-secondary {
+      border:1px solid rgba(201,168,76,.4); color:var(--gold);
+      padding:.9rem 2.2rem; border-radius:2px;
+      text-decoration:none; font-size:.88rem; letter-spacing:.04em;
+      transition:all .3s;
+    }
+    .btn-secondary:hover {
+      border-color:var(--gold); background:rgba(201,168,76,.07);
+    }
+
+    /* ── PODCAST CARD (hero right) ── */
+    .podcast-card {
+      background:var(--bg-3);
+      border:1px solid var(--border); border-radius:14px;
+      padding:2.2rem; position:relative; overflow:hidden;
+    }
+    .podcast-card::before {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:3px;
+      background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    }
+    .card-profile {
+      display:flex; align-items:center; gap:1.2rem; margin-bottom:1.4rem;
+    }
+    .profile-avatar {
+      width:72px; height:72px; border-radius:50%;
+      flex-shrink:0; position:relative; overflow:hidden;
+    }
+    .profile-avatar img {
+      width:100%; height:100%; object-fit:cover; object-position:top center;
+      display:block; border-radius:50%;
+    }
+    .profile-avatar::after {
+      content:''; position:absolute; inset:-3px;
+      border-radius:50%;
+      background:conic-gradient(var(--gold), transparent, var(--gold));
+      animation:ringRotate 3s linear infinite;
+      -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),white calc(100% - 2px));
+      mask:radial-gradient(farthest-side,transparent calc(100% - 2px),white calc(100% - 2px));
+    }
+    @keyframes ringRotate { to { transform:rotate(360deg); } }
+    .profile-info h3 {
+      font-family:'Cormorant Garant',serif; font-size:1.05rem;
+      margin-bottom:.2rem; display:flex; align-items:center; gap:.4rem;
+    }
+    .verified {
+      width:18px; height:18px; background:#1877f2;
+      border-radius:50%; display:inline-flex;
+      align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .verified svg { width:11px; height:11px; fill:#fff; }
+    .profile-handle { color:var(--muted); font-size:.83rem; }
+
+    .card-stats {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1rem; margin-bottom:1.4rem;
+      padding:1.2rem 0;
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+    }
+    .stat-item { text-align:center; }
+    .stat-num {
+      font-family:'Cormorant Garant',serif;
+      font-size:1.45rem; color:var(--gold);
+      font-weight:700; display:block;
+    }
+    .stat-label {
+      font-size:.7rem; color:var(--muted);
+      letter-spacing:.05em; text-transform:uppercase; margin-top:.2rem;
+    }
+    .card-bio {
+      color:var(--muted); font-size:.88rem;
+      line-height:1.75; margin-bottom:1.4rem;
+    }
+    .card-platforms { display:flex; gap:.5rem; flex-wrap:wrap; }
+    .platform-badge {
+      display:flex; align-items:center; gap:.4rem;
+      padding:.35rem .75rem;
+      background:rgba(201,168,76,.07);
+      border:1px solid rgba(201,168,76,.18);
+      border-radius:20px; font-size:.73rem;
+      color:var(--muted); text-decoration:none; transition:all .3s;
+    }
+    .platform-badge:hover {
+      background:rgba(201,168,76,.14);
+      color:var(--gold); border-color:var(--gold);
+    }
+    .platform-badge .dot {
+      width:6px; height:6px; border-radius:50%;
+    }
+
+    /* ── PARALLAX DIVIDER ── */
+    .parallax-divider {
+      height:160px; overflow:hidden;
+      display:flex; align-items:center;
+      background:linear-gradient(to bottom,var(--bg),var(--bg-2));
+    }
+    .parallax-text {
+      font-family:'Cormorant Garant',serif;
+      font-size:clamp(3rem,8vw,6.5rem); font-weight:900;
+      color:transparent;
+      -webkit-text-stroke:1px rgba(201,168,76,.12);
+      letter-spacing:.12em; white-space:nowrap; user-select:none;
+    }
+
+    /* ── COMMON SECTION ── */
+    section { padding:6rem 3rem; }
+    .container { max-width:1200px; margin:0 auto; }
+    .section-label {
+      font-size:.7rem; font-weight:600;
+      letter-spacing:.3em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:.9rem;
+      display:flex; align-items:center; gap:.9rem;
+    }
+    .section-label::before {
+      content:''; display:inline-block;
+      width:28px; height:1px; background:var(--gold);
+    }
+    .section-title {
+      font-family:'Cormorant Garant',serif;
+      font-size:clamp(2.4rem,4vw,3.8rem);
+      margin-bottom:1.5rem; line-height:1.1;
+      font-weight:600; letter-spacing:-.01em;
+    }
+
+    /* ── ABOUT ── */
+    .about { background:var(--bg-2); }
+    .about-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:5rem; align-items:start;
+    }
+    .about-text p {
+      color:var(--muted); line-height:1.9;
+      margin-bottom:1.2rem; font-size:.98rem;
+    }
+    .about-tags {
+      display:flex; flex-wrap:wrap; gap:.55rem; margin-top:1.8rem;
+    }
+    .tag {
+      padding:.38rem .9rem;
+      border:1px solid var(--border); border-radius:20px;
+      font-size:.78rem; color:var(--muted); letter-spacing:.04em;
+    }
+    .hosts-card {
+      background:var(--bg-3);
+      border:1px solid var(--border); border-radius:12px;
+      padding:2rem; position:relative;
+    }
+    .hosts-card::before {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,var(--gold),transparent);
+    }
+    .hosts-title {
+      font-family:'Cormorant Garant',serif;
+      font-size:1.25rem; margin-bottom:.5rem; color:var(--gold);
+    }
+    .hosts-desc {
+      color:var(--muted); font-size:.88rem;
+      line-height:1.75; margin-bottom:1.5rem;
+    }
+    .hosts-names { display:flex; gap:.8rem; }
+    .host-pill {
+      display:flex; align-items:center; gap:.4rem;
+      background:rgba(201,168,76,.09);
+      border:1px solid rgba(201,168,76,.25);
+      padding:.45rem 1rem; border-radius:30px;
+      font-size:.84rem; font-weight:600;
+    }
+    .guest-tags {
+      display:flex; flex-wrap:wrap; gap:.35rem; margin-top:1.2rem;
+    }
+    .guest-tag {
+      font-size:.78rem; color:var(--muted);
+      padding:.28rem .65rem;
+      background:rgba(255,255,255,.03); border-radius:4px;
+    }
+    /* Coffee SVG */
+    .coffee-wrap {
+      margin-top:2rem; display:flex; justify-content:center;
+    }
+
+    /* ── MÉTRICAS ── */
+    .metrics-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:1.5rem; margin-top:3rem;
+    }
+    .metric-card {
+      background:var(--bg-3);
+      border:1px solid var(--border); border-radius:10px;
+      padding:2rem; text-align:center;
+      position:relative; overflow:hidden;
+      transition:transform .3s, border-color .3s;
+    }
+    .metric-card:hover {
+      transform:translateY(-4px); border-color:var(--gold);
+    }
+    .metric-card::after {
+      content:''; position:absolute;
+      bottom:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,var(--gold),transparent);
+      transform:scaleX(0); transition:transform .3s;
+    }
+    .metric-card:hover::after { transform:scaleX(1); }
+    .metric-icon { font-size:1.9rem; margin-bottom:.9rem; }
+    .metric-num {
+      font-family:'Cormorant Garant',serif;
+      font-size:2.4rem; font-weight:700;
+      color:var(--gold); display:block; margin-bottom:.4rem;
+    }
+    .metric-label { color:var(--muted); font-size:.82rem; letter-spacing:.04em; }
+
+    /* ── EPISODIOS ── */
+    .episodes-header {
+      display:flex; justify-content:space-between;
+      align-items:flex-end; margin-bottom:2.5rem;
+    }
+    .episodes-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1.4rem;
+    }
+    .episode-card {
+      background:var(--bg-3);
+      border:1px solid var(--border); border-radius:10px;
+      padding:1.7rem; transition:all .3s; cursor:pointer;
+    }
+    .episode-card:hover {
+      border-color:var(--gold); transform:translateY(-3px);
+    }
+    .ep-num {
+      font-size:.72rem; color:var(--gold);
+      letter-spacing:.2em; font-weight:600; margin-bottom:.7rem;
+    }
+    .ep-title {
+      font-family:'Cormorant Garant',serif;
+      font-size:.98rem; margin-bottom:.7rem; line-height:1.4;
+    }
+    .ep-desc { color:var(--muted); font-size:.82rem; line-height:1.65; }
+    .ep-meta {
+      display:flex; align-items:center; gap:.4rem;
+      margin-top:.9rem; color:var(--muted); font-size:.76rem;
+    }
+    .spotify-cta {
+      margin-top:2.5rem;
+      background:var(--bg-3);
+      border:1px solid var(--border); border-radius:12px;
+      padding:2rem; text-align:center;
+    }
+    .spotify-cta p { color:var(--muted); margin-bottom:1.3rem; font-size:.92rem; }
+
+    /* ── GALERÍA ── */
+    .gallery-grid {
+      columns:3; gap:1rem; margin-top:2.5rem;
+    }
+    .gallery-item {
+      break-inside:avoid; margin-bottom:1rem;
+      position:relative; overflow:hidden;
+      border-radius:10px; border:1px solid var(--border);
+      cursor:pointer;
+    }
+    .gallery-item img {
+      width:100%; display:block;
+      transition:transform .5s ease;
+      aspect-ratio:16/9; object-fit:cover;
+    }
+    .gallery-item:hover img { transform:scale(1.05); }
+    .gallery-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(8,8,8,.85) 0%, transparent 55%);
+      opacity:0; transition:opacity .4s;
+      display:flex; align-items:flex-end;
+      padding:1rem 1.1rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity:1; }
+    .gallery-caption {
+      font-size:.8rem; font-weight:600;
+      color:var(--text); letter-spacing:.03em;
+      text-shadow:0 1px 4px rgba(0,0,0,.6);
+    }
+    .gallery-play {
+      position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-50%) scale(.8);
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(201,168,76,.9);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; transition:all .3s; color:var(--bg);
+      font-size:1rem; padding-left:3px;
+    }
+    .gallery-item:hover .gallery-play {
+      opacity:1; transform:translate(-50%,-50%) scale(1);
+    }
+
+    /* ── VIDEOS ── */
+    .videos-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1.4rem; margin-top:2.5rem;
+    }
+    .video-card {
+      border-radius:12px; overflow:hidden;
+      border:1px solid var(--border);
+      background:var(--bg-3);
+      transition:transform .3s, border-color .3s;
+      cursor:pointer;
+    }
+    .video-card:hover { transform:translateY(-4px); border-color:var(--gold); }
+    .video-thumb {
+      position:relative; aspect-ratio:16/9; overflow:hidden;
+    }
+    .video-thumb img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform .5s;
+    }
+    .video-card:hover .video-thumb img { transform:scale(1.04); }
+    .video-thumb-overlay {
+      position:absolute; inset:0;
+      background:rgba(8,8,8,.35);
+      display:flex; align-items:center; justify-content:center;
+      transition:background .3s;
+    }
+    .video-card:hover .video-thumb-overlay { background:rgba(8,8,8,.18); }
+    .play-btn {
+      width:54px; height:54px; border-radius:50%;
+      background:linear-gradient(135deg,var(--gold),var(--gold-dk));
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; padding-left:4px;
+      box-shadow:0 6px 24px rgba(201,168,76,.4);
+      transition:transform .3s;
+      color:var(--bg);
+    }
+    .video-card:hover .play-btn { transform:scale(1.12); }
+    .video-info { padding:1.1rem 1.2rem 1.3rem; }
+    .video-ep {
+      font-size:.68rem; color:var(--gold);
+      letter-spacing:.18em; font-weight:600;
+      text-transform:uppercase; margin-bottom:.45rem;
+    }
+    .video-title {
+      font-family:'Cormorant Garant',serif;
+      font-size:.95rem; line-height:1.35; margin-bottom:.5rem;
+    }
+    .video-guest {
+      color:var(--muted); font-size:.8rem;
+      display:flex; align-items:center; gap:.4rem;
+    }
+    /* Modal video player */
+    .modal-overlay {
+      position:fixed; inset:0; z-index:9999;
+      background:rgba(0,0,0,.92);
+      display:none; align-items:center; justify-content:center;
+      backdrop-filter:blur(8px);
+    }
+    .modal-overlay.open { display:flex; }
+    .modal-inner {
+      position:relative; width:90%; max-width:900px;
+    }
+    .modal-close {
+      position:absolute; top:-2.5rem; right:0;
+      color:var(--muted); font-size:1.5rem;
+      cursor:pointer; background:none; border:none;
+      transition:color .3s;
+    }
+    .modal-close:hover { color:var(--gold); }
+    .modal-inner iframe {
+      width:100%; aspect-ratio:16/9;
+      border:none; border-radius:8px;
+    }
+
+    @media(max-width:960px){
+      .gallery-grid { columns:2; }
+      .videos-grid { grid-template-columns:1fr; }
+    }
+    @media(max-width:480px){
+      .gallery-grid { columns:1; }
+    }
+
+    /* ── PLATAFORMAS ── */
+    .platforms-grid {
+      display:grid; grid-template-columns:repeat(2,1fr);
+      gap:1.2rem; margin-top:2.5rem;
+    }
+    .platform-card {
+      background:var(--bg-3);
+      border:1px solid var(--border); border-radius:12px;
+      padding:1.7rem;
+      display:flex; align-items:center; gap:1.3rem;
+      text-decoration:none; color:var(--text); transition:all .3s;
+    }
+    .platform-card:hover {
+      border-color:var(--gold);
+      transform:translateX(4px);
+      background:rgba(201,168,76,.04);
+    }
+    .platform-icon-wrap {
+      width:52px; height:52px; border-radius:10px;
+      display:flex; align-items:center;
+      justify-content:center; font-size:1.5rem; flex-shrink:0;
+    }
+    .platform-info h4 { font-weight:600; margin-bottom:.25rem; }
+    .platform-info p { color:var(--muted); font-size:.82rem; }
+    .platform-arrow {
+      margin-left:auto; color:var(--gold);
+      opacity:0; transform:translateX(-8px); transition:all .3s;
+      font-size:1.1rem;
+    }
+    .platform-card:hover .platform-arrow { opacity:1; transform:translateX(0); }
+
+    /* ── CONTACTO ── */
+    .contact { background:var(--bg-2); }
+    .contact-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:5rem; align-items:start;
+    }
+    .contact-intro-title {
+      font-family:'Cormorant Garant',serif;
+      font-size:2.4rem; line-height:1.2; margin-bottom:1rem;
+    }
+    .contact-intro-desc {
+      color:var(--muted); line-height:1.85; margin-bottom:2rem;
+    }
+    .contact-items { display:flex; flex-direction:column; gap:.9rem; }
+    .contact-item {
+      display:flex; align-items:center; gap:1rem;
+      padding:.9rem 1.1rem;
+      background:var(--bg-3);
+      border:1px solid var(--border); border-radius:8px;
+      text-decoration:none; color:var(--text); transition:all .3s;
+      font-size:.9rem;
+    }
+    .contact-item:hover { border-color:var(--gold); color:var(--gold); }
+    .contact-item-icon {
+      width:34px; height:34px;
+      background:rgba(201,168,76,.1); border-radius:7px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1rem; flex-shrink:0;
+    }
+    /* Form */
+    .contact-form { display:flex; flex-direction:column; gap:1.1rem; }
+    .form-group { display:flex; flex-direction:column; gap:.35rem; }
+    .form-group label {
+      font-size:.75rem; color:var(--muted);
+      letter-spacing:.1em; text-transform:uppercase;
+    }
+    .form-group input,
+    .form-group textarea {
+      background:var(--bg-3); border:1px solid var(--border);
+      border-radius:6px; padding:.85rem 1.1rem;
+      color:var(--text); font-family:'DM Sans',sans-serif;
+      font-size:.92rem; outline:none;
+      transition:border-color .3s; resize:vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color:var(--gold); }
+    .form-group textarea { min-height:110px; }
+    .submit-btn {
+      background:linear-gradient(135deg,var(--gold),var(--gold-dk));
+      color:var(--bg); border:none;
+      padding:.95rem 2rem; border-radius:3px;
+      font-weight:700; font-size:.88rem; letter-spacing:.05em;
+      cursor:pointer; transition:all .3s; align-self:flex-start;
+    }
+    .submit-btn:hover {
+      transform:translateY(-2px);
+      box-shadow:0 10px 28px rgba(201,168,76,.28);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background:var(--bg);
+      border-top:1px solid var(--border);
+      padding:2.2rem 3rem;
+    }
+    .footer-inner {
+      max-width:1200px; margin:0 auto;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .footer-logo {
+      font-family:'Cormorant Garant',serif;
+      font-size:1.1rem; color:var(--gold);
+    }
+    .footer-copy { color:var(--muted); font-size:.78rem; }
+    .footer-socials { display:flex; gap:1.2rem; }
+    .footer-social {
+      color:var(--muted); text-decoration:none;
+      font-size:.78rem; letter-spacing:.04em; transition:color .3s;
+    }
+    .footer-social:hover { color:var(--gold); }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity:0; transform:translateY(28px);
+      transition:opacity .8s ease, transform .8s ease;
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    /* Social icon buttons */
+    .social-icon-btn {
+      width:40px; height:40px; border-radius:50%;
+      border:1px solid var(--border);
+      background:rgba(201,168,76,.06);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--muted);
+      transition:all .3s; cursor:pointer;
+    }
+    .social-icon-btn:hover {
+      border-color:var(--gold);
+      background:rgba(201,168,76,.15);
+      color:var(--gold);
+      transform:translateY(-2px);
+    }
+
+    @media(max-width:960px){
+      nav { padding:1rem 1.5rem; }
+      .nav-links { display:none; }
+      section { padding:4rem 1.5rem; }
+      .hero { padding:5rem 1.5rem 3rem; }
+      .hero-content { grid-template-columns:1fr; gap:2.5rem; }
+      .about-grid { grid-template-columns:1fr; gap:2.5rem; }
+      .metrics-grid { grid-template-columns:repeat(2,1fr); }
+      .episodes-grid { grid-template-columns:1fr; }
+      .platforms-grid { grid-template-columns:1fr; }
+      .contact-grid { grid-template-columns:1fr; gap:2.5rem; }
+      .footer-inner { flex-direction:column; gap:.8rem; text-align:center; }
+      .footer-socials { justify-content:center; }
+    }
+    @media(max-width:480px){
+      .hero-btns { flex-direction:column; }
+      .metrics-grid { grid-template-columns:repeat(2,1fr); }
+      .episodes-header { flex-direction:column; gap:1rem; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ NAV ════════ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Coffee<span>Time</span></a>
+  <ul class="nav-links">
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#metricas">Métricas</a></li>
+    <li><a href="#episodios">Episodios</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#plataformas">Escuchar</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="mailto:Gerenciadonesproducciones@gmail.com" class="nav-cta">Colaborar</a>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+
+  <div class="hero-content">
+
+    <!-- Left -->
+    <div class="reveal">
+      <div class="hero-label">Nicaragua &middot; Desde 2018</div>
+      <h1 class="hero-title">
+        El Podcast que<br>
+        <span class="gold">Mueve a Nicaragua</span>
+      </h1>
+      <p class="hero-desc">
+        Conversaciones auténticas sobre música, cultura, emprendimiento y vida. Con César y Gaby, los hosts que convirtieron el café en un movimiento.
+      </p>
+      <div class="hero-btns">
+        <a href="https://creators.spotify.com/pod/show/podcastcoffeetimenic" target="_blank" class="btn-primary">
+          ▶ Escuchar ahora
+        </a>
+        <a href="#contacto" class="btn-secondary">Colaborar</a>
+      </div>
+
+      <!-- Redes sociales -->
+      <div style="display:flex; align-items:center; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
+        <span style="font-size:.7rem; color:var(--muted); letter-spacing:.15em; text-transform:uppercase;">Síguenos</span>
+        <div style="width:30px; height:1px; background:var(--border);"></div>
+        <a href="https://www.facebook.com/Podcast-CoffeeTime" target="_blank" title="Facebook" style="text-decoration:none;">
+          <div class="social-icon-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/podcastcoffeetime_nicaragua/" target="_blank" title="Instagram" style="text-decoration:none;">
+          <div class="social-icon-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/channel/UC2MgYxPVq-y2HUHxOVNBRSw" target="_blank" title="YouTube" style="text-decoration:none;">
+          <div class="social-icon-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#080808"/></svg>
+          </div>
+        </a>
+        <a href="https://creators.spotify.com/pod/show/podcastcoffeetimenic" target="_blank" title="Spotify" style="text-decoration:none;">
+          <div class="social-icon-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 13.5c2.5-1 5.5-.8 7.5.5" stroke="#080808" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M7.5 11c3-1.2 6.5-1 9 .7" stroke="#080808" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M7 8.5c3.5-1.5 7.5-1.2 10.5 1" stroke="#080808" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+          </div>
+        </a>
+        <a href="mailto:Gerenciadonesproducciones@gmail.com" title="Email" style="text-decoration:none;">
+          <div class="social-icon-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right — Podcast Card -->
+    <div class="reveal" style="transition-delay:.18s">
+      <div class="podcast-card">
+        <div class="card-profile">
+          <div class="profile-avatar">
+            <img src="assets/instagram/profile.jpg.jpeg" alt="César - Podcast Coffee Time">
+          </div>
+          <div class="profile-info">
+            <h3>
+              Podcast Coffee Time
+              <span class="verified">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              </span>
+            </h3>
+            <span class="profile-handle">@Podcast-CoffeeTime &middot; Nicaragua 🇳🇮</span>
+          </div>
+        </div>
+
+        <div class="card-stats">
+          <div class="stat-item">
+            <span class="stat-num">146K</span>
+            <span class="stat-label">Facebook</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">12.5K</span>
+            <span class="stat-label">Instagram</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">118+</span>
+            <span class="stat-label">Episodios</span>
+          </div>
+        </div>
+
+        <p class="card-bio">
+          Un espacio donde compartimos experiencias, conversaciones y mucha música. Entrevistas con músicos, artistas y creadores de contenido nicaragüenses e internacionales. ☕🎙️
+        </p>
+
+        <div class="card-platforms">
+          <a href="https://www.facebook.com/Podcast-CoffeeTime" target="_blank" class="platform-badge">
+            <span class="dot" style="background:#1877f2"></span>Facebook
+          </a>
+          <a href="https://www.instagram.com/podcastcoffeetime_nicaragua/" target="_blank" class="platform-badge">
+            <span class="dot" style="background:#e1306c"></span>Instagram
+          </a>
+          <a href="https://www.youtube.com/channel/UC2MgYxPVq-y2HUHxOVNBRSw" target="_blank" class="platform-badge">
+            <span class="dot" style="background:#ff0000"></span>YouTube
+          </a>
+          <a href="https://creators.spotify.com/pod/show/podcastcoffeetimenic" target="_blank" class="platform-badge">
+            <span class="dot" style="background:#1db954"></span>Spotify
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ PARALLAX DIVIDER ════════ -->
+<div class="parallax-divider">
+  <div class="parallax-text" id="parallaxText">COFFEE TIME &nbsp;&middot;&nbsp; NICARAGUA &nbsp;&middot;&nbsp; PODCAST &nbsp;&middot;&nbsp;</div>
+</div>
+
+<!-- ════════ NOSOTROS ════════ -->
+<section class="about" id="nosotros">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="reveal">
+        <div class="section-label">Sobre nosotros</div>
+        <h2 class="section-title">
+          Más que un podcast,<br>
+          un <span style="color:var(--gold)">movimiento</span>
+        </h2>
+        <div class="about-text">
+          <p>Podcast Coffee Time Nicaragua nació de la pasión por contar historias auténticas. Con más de <strong style="color:var(--gold)">118 episodios</strong> producidos, nos hemos convertido en uno de los podcasts de referencia de Nicaragua.</p>
+          <p>Cada episodio es una conversación honesta — sin guiones, sin filtros. Músicos, artistas, emprendedores, deportistas... todos tienen su momento frente al micrófono.</p>
+          <p>Lo que empezó como dos amigos y un micrófono se convirtió en una comunidad de más de <strong style="color:var(--gold)">158,500 personas</strong> en todas nuestras plataformas.</p>
+        </div>
+        <div class="about-tags">
+          <span class="tag">🎵 Música</span>
+          <span class="tag">🎙️ Entrevistas</span>
+          <span class="tag">🇳🇮 Cultura Nicaragua</span>
+          <span class="tag">💼 Emprendimiento</span>
+          <span class="tag">🎨 Arte</span>
+          <span class="tag">🌎 Internacional</span>
+          <span class="tag">🏃 Deportes</span>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:.18s">
+        <div class="hosts-card">
+          <div class="hosts-title">César &amp; Gaby</div>
+          <div class="hosts-desc">
+            Productores, músicos y creadores de contenido nicaragüenses. Unidos por la pasión por la música y el arte, crearon Podcast Coffee Time para dar voz a los talentos de Nicaragua y el mundo.
+          </div>
+          <div class="hosts-names">
+            <div class="host-pill">🎙️ César</div>
+            <div class="host-pill">🎙️ Gaby</div>
+          </div>
+          <div style="margin-top:1.5rem; padding-top:1.3rem; border-top:1px solid var(--border);">
+            <div style="font-size:.72rem; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.8rem;">Han entrevistado a</div>
+            <div class="guest-tags">
+              <span class="guest-tag">Músicos</span>
+              <span class="guest-tag">Artistas visuales</span>
+              <span class="guest-tag">Emprendedores</span>
+              <span class="guest-tag">Creadores de contenido</span>
+              <span class="guest-tag">Deportistas</span>
+              <span class="guest-tag">Internacionales</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foto del host -->
+        <div style="margin-top:1.8rem; position:relative;">
+          <img src="assets/instagram/profile.jpg.jpeg" alt="César - Podcast Coffee Time"
+            style="width:100%; border-radius:12px; border:1px solid var(--border);
+                   object-fit:cover; aspect-ratio:3/4; object-position:top center;
+                   display:block; filter:brightness(.95) contrast(1.05);">
+          <div style="position:absolute; bottom:1rem; left:1rem; right:1rem;
+                      background:rgba(8,8,8,.75); backdrop-filter:blur(8px);
+                      border:1px solid var(--border); border-radius:8px;
+                      padding:.7rem 1rem; display:flex; align-items:center; gap:.8rem;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0;
+                        box-shadow:0 0 8px var(--gold); animation:pulse 2s ease-in-out infinite;"></div>
+            <span style="font-size:.78rem; color:var(--text); letter-spacing:.04em;">Podcast Coffee Time · Nicaragua 🇳🇮</span>
+          </div>
+        </div>
+        <style>
+          @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+        </style>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ MÉTRICAS ════════ -->
+<section id="metricas" style="padding:5rem 3rem;">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:.5rem;">
+      <div class="section-label" style="justify-content:center;">Impacto</div>
+      <h2 class="section-title">Números que hablan</h2>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card reveal">
+        <div class="metric-icon">👥</div>
+        <span class="metric-num counter" data-target="158500">0</span>
+        <span class="metric-label">Comunidad total</span>
+      </div>
+      <div class="metric-card reveal" style="transition-delay:.1s">
+        <div class="metric-icon">🎙️</div>
+        <span class="metric-num counter" data-target="118">0</span>
+        <span class="metric-label">Episodios publicados</span>
+      </div>
+      <div class="metric-card reveal" style="transition-delay:.2s">
+        <div class="metric-icon">📘</div>
+        <span class="metric-num counter" data-target="146000">0</span>
+        <span class="metric-label">Seguidores en Facebook</span>
+      </div>
+      <div class="metric-card reveal" style="transition-delay:.3s">
+        <div class="metric-icon">📷</div>
+        <span class="metric-num counter" data-target="12500">0</span>
+        <span class="metric-label">Seguidores en Instagram</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ EPISODIOS ════════ -->
+<section id="episodios" style="background:var(--bg-2); padding:6rem 3rem;">
+  <div class="container">
+    <div class="episodes-header">
+      <div>
+        <div class="section-label reveal">Contenido</div>
+        <h2 class="section-title reveal">Episodios destacados</h2>
+      </div>
+      <a href="https://creators.spotify.com/pod/show/podcastcoffeetimenic" target="_blank" class="btn-secondary reveal" style="white-space:nowrap">Ver todos →</a>
+    </div>
+
+    <div class="episodes-grid">
+      <div class="episode-card reveal">
+        <div class="ep-num">EP. #118 · MÁS RECIENTE</div>
+        <div class="ep-title">El episodio más reciente del podcast</div>
+        <p class="ep-desc">Conversaciones profundas sobre música, cultura y el impacto del arte en Nicaragua y la diáspora.</p>
+        <div class="ep-meta">🎧 <span>Podcast Coffee Time · Spotify</span></div>
+      </div>
+      <div class="episode-card reveal" style="transition-delay:.1s">
+        <div class="ep-num">EP. #99 · ESPECIAL</div>
+        <div class="ep-title">Con EXPONICA MIAMI (2023)</div>
+        <p class="ep-desc">Edición especial grabada en Miami con emprendedores y artistas nicaragüenses en EXPONICA.</p>
+        <div class="ep-meta">🎧 <span>Edición internacional</span></div>
+      </div>
+      <div class="episode-card reveal" style="transition-delay:.2s">
+        <div class="ep-num">+ DE 100 EPISODIOS</div>
+        <div class="ep-title">Temas que importan, semana a semana</div>
+        <p class="ep-desc">Música, recuperación personal, bienes raíces, migración, entretenimiento... sin filtros.</p>
+        <div class="ep-meta">🎧 <span>Disponibles en todas las plataformas</span></div>
+      </div>
+    </div>
+
+    <div class="spotify-cta reveal">
+      <p>Escúchanos directamente en Spotify</p>
+      <a href="https://creators.spotify.com/pod/show/podcastcoffeetimenic" target="_blank" class="btn-primary" style="display:inline-flex">
+        🎵 Abrir en Spotify
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ GALERÍA DE ENTREVISTAS ════════ -->
+<section id="galeria" style="padding:6rem 3rem; background:var(--bg);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Detrás del micrófono</div>
+      <h2 class="section-title">Galería de <span style="color:var(--gold)">entrevistas</span></h2>
+      <p style="color:var(--muted); font-size:.95rem; line-height:1.8; max-width:540px;">
+        Momentos reales de cada grabación — músicos, artistas y personalidades de Nicaragua sentados frente al micrófono de Coffee Time.
+      </p>
+    </div>
+
+    <div class="gallery-grid reveal" style="transition-delay:.15s">
+      <!-- DR TOSHI -->
+      <div class="gallery-item" onclick="openVideo('X13l3kptxlg')">
+        <img src="https://img.youtube.com/vi/X13l3kptxlg/hqdefault.jpg" alt="Entrevista DR TOSHI" loading="lazy">
+        <div class="gallery-overlay">
+          <span class="gallery-caption">DR TOSHI · TikToker japonés en Nicaragua</span>
+        </div>
+        <div class="gallery-play">▶</div>
+      </div>
+      <!-- Betzy Lagos -->
+      <div class="gallery-item" onclick="openVideo('eetMZEi-9-Y')">
+        <img src="https://img.youtube.com/vi/eetMZEi-9-Y/hqdefault.jpg" alt="Entrevista Betzy Lagos" loading="lazy">
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Betzy Lagos · Comediante & YouTuber</span>
+        </div>
+        <div class="gallery-play">▶</div>
+      </div>
+      <!-- OSMAN FLORES -->
+      <div class="gallery-item" onclick="openVideo('TIlqSCRZeYg')">
+        <img src="https://img.youtube.com/vi/TIlqSCRZeYg/hqdefault.jpg" alt="Entrevista Osman Flores" loading="lazy">
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Osman Flores #86 · Periodista internacional</span>
+        </div>
+        <div class="gallery-play">▶</div>
+      </div>
+      <!-- LIENDRA NICA -->
+      <div class="gallery-item" onclick="openVideo('95hT5Fy6rGo')">
+        <img src="https://img.youtube.com/vi/95hT5Fy6rGo/hqdefault.jpg" alt="Entrevista Liendra Nica" loading="lazy">
+        <div class="gallery-overlay">
+          <span class="gallery-caption">LIENDRA NICA · Creador de contenido</span>
+        </div>
+        <div class="gallery-play">▶</div>
+      </div>
+      <!-- daliko505 -->
+      <div class="gallery-item" onclick="openVideo('BDZ5sWvYCYs')">
+        <img src="https://img.youtube.com/vi/BDZ5sWvYCYs/hqdefault.jpg" alt="Entrevista daliko505" loading="lazy">
+        <div class="gallery-overlay">
+          <span class="gallery-caption">@daliko505 · Artista urbano nicaragüense</span>
+        </div>
+        <div class="gallery-play">▶</div>
+      </div>
+      <!-- NELSON ZARATE -->
+      <div class="gallery-item" onclick="openVideo('Lm7Sj__ijsI')">
+        <img src="https://img.youtube.com/vi/Lm7Sj__ijsI/hqdefault.jpg" alt="Entrevista Nelson Zarate" loading="lazy">
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Nelson Zarate #102 · Episodio especial</span>
+        </div>
+        <div class="gallery-play">▶</div>
+      </div>
+      <!-- rebanica -->
+      <div class="gallery-item" onclick="openVideo('17Jz0_g4fyk')">
+        <img src="https://img.youtube.com/vi/17Jz0_g4fyk/hqdefault.jpg" alt="Entrevista rebanica" loading="lazy">
+        <div class="gallery-overlay">
+          <span class="gallery-caption">@rebanica9060 · Conversación completa</span>
+        </div>
+        <div class="gallery-play">▶</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ VIDEOS MÁS REPRODUCIDOS ════════ -->
+<section id="videos" style="padding:6rem 3rem; background:var(--bg-2);">
+  <div class="container">
+    <div class="episodes-header">
+      <div>
+        <div class="section-label reveal">YouTube</div>
+        <h2 class="section-title reveal">Videos más <span style="color:var(--gold)">reproducidos</span></h2>
+      </div>
+      <a href="https://www.youtube.com/channel/UC2MgYxPVq-y2HUHxOVNBRSw" target="_blank" class="btn-secondary reveal" style="white-space:nowrap">Ver canal →</a>
+    </div>
+
+    <div class="videos-grid">
+
+      <div class="video-card reveal" onclick="openVideo('X13l3kptxlg')">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/X13l3kptxlg/hqdefault.jpg" alt="DR TOSHI" loading="lazy">
+          <div class="video-thumb-overlay"><div class="play-btn">▶</div></div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">Episodio completo · 2023</div>
+          <div class="video-title">Podcast Coffee Time con DR TOSHI</div>
+          <div class="video-guest">🎙️ TikToker japonés residente en Nicaragua</div>
+        </div>
+      </div>
+
+      <div class="video-card reveal" style="transition-delay:.1s" onclick="openVideo('eetMZEi-9-Y')">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/eetMZEi-9-Y/hqdefault.jpg" alt="Betzy Lagos" loading="lazy">
+          <div class="video-thumb-overlay"><div class="play-btn">▶</div></div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">Episodio completo · 2022</div>
+          <div class="video-title">Podcast Coffee Time // Betzy Lagos</div>
+          <div class="video-guest">🎙️ Comediante, YouTuber & TikToker</div>
+        </div>
+      </div>
+
+      <div class="video-card reveal" style="transition-delay:.2s" onclick="openVideo('95hT5Fy6rGo')">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/95hT5Fy6rGo/hqdefault.jpg" alt="Liendra Nica" loading="lazy">
+          <div class="video-thumb-overlay"><div class="play-btn">▶</div></div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">Episodio completo · 2022</div>
+          <div class="video-title">Podcast Coffee Time // LIENDRA NICA</div>
+          <div class="video-guest">🎙️ Creador de contenido viral</div>
+        </div>
+      </div>
+
+      <div class="video-card reveal" onclick="openVideo('TIlqSCRZeYg')">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/TIlqSCRZeYg/hqdefault.jpg" alt="Osman Flores" loading="lazy">
+          <div class="video-thumb-overlay"><div class="play-btn">▶</div></div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">Ep. #86 · 2023</div>
+          <div class="video-title">Podcast Coffee Time #86 con OSMAN FLORES</div>
+          <div class="video-guest">🎙️ Periodista con +17 años de experiencia</div>
+        </div>
+      </div>
+
+      <div class="video-card reveal" style="transition-delay:.1s" onclick="openVideo('BDZ5sWvYCYs')">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/BDZ5sWvYCYs/hqdefault.jpg" alt="daliko505" loading="lazy">
+          <div class="video-thumb-overlay"><div class="play-btn">▶</div></div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">Episodio completo · 2022</div>
+          <div class="video-title">Podcast Coffee Time con @daliko505</div>
+          <div class="video-guest">🎙️ Artista urbano nicaragüense</div>
+        </div>
+      </div>
+
+      <div class="video-card reveal" style="transition-delay:.2s" onclick="openVideo('Lm7Sj__ijsI')">
+        <div class="video-thumb">
+          <img src="https://img.youtube.com/vi/Lm7Sj__ijsI/hqdefault.jpg" alt="Nelson Zarate" loading="lazy">
+          <div class="video-thumb-overlay"><div class="play-btn">▶</div></div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">Ep. #102 · 2023</div>
+          <div class="video-title">Podcast Coffee Time #102 con NELSON ZARATE</div>
+          <div class="video-guest">🎙️ Episodio especial del año</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Modal reproductor -->
+<div class="modal-overlay" id="videoModal" onclick="closeVideo(event)">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeVideoBtn()">✕</button>
+    <iframe id="modalFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  </div>
+</div>
+
+<!-- ════════ PLATAFORMAS ════════ -->
+<section id="plataformas" style="padding:6rem 3rem;">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <div class="section-label" style="justify-content:center;">Disponible en</div>
+      <h2 class="section-title">Síguenos donde estés</h2>
+    </div>
+    <div class="platforms-grid">
+      <a href="https://www.facebook.com/Podcast-CoffeeTime" target="_blank" class="platform-card reveal">
+        <div class="platform-icon-wrap" style="background:rgba(24,119,242,.13)">📘</div>
+        <div class="platform-info">
+          <h4>Facebook</h4>
+          <p>146,000 seguidores · @Podcast-CoffeeTime</p>
+        </div>
+        <span class="platform-arrow">→</span>
+      </a>
+      <a href="https://www.instagram.com/podcastcoffeetime_nicaragua/" target="_blank" class="platform-card reveal" style="transition-delay:.1s">
+        <div class="platform-icon-wrap" style="background:rgba(225,48,108,.13)">📸</div>
+        <div class="platform-info">
+          <h4>Instagram</h4>
+          <p>12,500 seguidores · @podcastcoffeetime_nicaragua</p>
+        </div>
+        <span class="platform-arrow">→</span>
+      </a>
+      <a href="https://www.youtube.com/channel/UC2MgYxPVq-y2HUHxOVNBRSw" target="_blank" class="platform-card reveal" style="transition-delay:.2s">
+        <div class="platform-icon-wrap" style="background:rgba(255,0,0,.12)">▶️</div>
+        <div class="platform-info">
+          <h4>YouTube</h4>
+          <p>Podcast Coffee Time TV Oficial</p>
+        </div>
+        <span class="platform-arrow">→</span>
+      </a>
+      <a href="https://creators.spotify.com/pod/show/podcastcoffeetimenic" target="_blank" class="platform-card reveal" style="transition-delay:.3s">
+        <div class="platform-icon-wrap" style="background:rgba(29,185,84,.13)">🎵</div>
+        <div class="platform-info">
+          <h4>Spotify</h4>
+          <p>118+ episodios · podcastcoffeetimenic</p>
+        </div>
+        <span class="platform-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ CONTACTO ════════ -->
+<section class="contact" id="contacto">
+  <div class="container">
+    <div class="contact-grid">
+
+      <div class="reveal">
+        <div class="section-label">Contáctanos</div>
+        <h2 class="contact-intro-title">
+          ¿Quieres colaborar<br>
+          <span style="color:var(--gold)">con nosotros?</span>
+        </h2>
+        <p class="contact-intro-desc">
+          Abiertos a auspicios, entrevistas, eventos y colaboraciones con marcas. Si tu historia merece ser contada, hablemos.
+        </p>
+        <div class="contact-items">
+          <a href="mailto:Gerenciadonesproducciones@gmail.com" class="contact-item">
+            <div class="contact-item-icon">✉️</div>
+            Gerenciadonesproducciones@gmail.com
+          </a>
+          <a href="https://www.facebook.com/Podcast-CoffeeTime" target="_blank" class="contact-item">
+            <div class="contact-item-icon">📘</div>
+            @Podcast-CoffeeTime en Facebook
+          </a>
+          <a href="https://www.instagram.com/podcastcoffeetime_nicaragua/" target="_blank" class="contact-item">
+            <div class="contact-item-icon">📷</div>
+            @podcastcoffeetime_nicaragua en Instagram
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:.18s">
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label>Tu nombre</label>
+            <input type="text" placeholder="¿Cómo te llamas?">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="tu@email.com">
+          </div>
+          <div class="form-group">
+            <label>Asunto</label>
+            <input type="text" placeholder="Colaboración, auspicio, entrevista...">
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea placeholder="Cuéntanos tu propuesta..."></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Enviar mensaje →</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Coffee<span style="color:var(--text)">Time</span></div>
+    <div class="footer-copy">© 2026 Podcast Coffee Time Nicaragua &middot; Todos los derechos reservados</div>
+    <div class="footer-socials">
+      <a href="https://www.facebook.com/Podcast-CoffeeTime" target="_blank" class="footer-social">Facebook</a>
+      <a href="https://www.instagram.com/podcastcoffeetime_nicaragua/" target="_blank" class="footer-social">Instagram</a>
+      <a href="https://www.youtube.com/channel/UC2MgYxPVq-y2HUHxOVNBRSw" target="_blank" class="footer-social">YouTube</a>
+      <a href="https://creators.spotify.com/pod/show/podcastcoffeetimenic" target="_blank" class="footer-social">Spotify</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Parallax text
+  const pt = document.getElementById('parallaxText');
+  window.addEventListener('scroll', () => {
+    if (pt) pt.style.transform = `translateX(${window.scrollY * 0.12}px)`;
+  });
+
+  // Scroll reveal
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // Counter animation
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting || e.target.dataset.animated) return;
+      e.target.dataset.animated = '1';
+      const target = parseInt(e.target.dataset.target);
+      const duration = 2000;
+      const start = performance.now();
+      const tick = now => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const v = Math.floor(eased * target);
+        e.target.textContent = target >= 1000
+          ? (v / 1000).toFixed(v >= 10000 ? 0 : 1) + 'K'
+          : v;
+        if (p < 1) requestAnimationFrame(tick);
+        else e.target.textContent = target >= 1000
+          ? (target / 1000).toFixed(target >= 10000 ? 0 : 1) + 'K'
+          : target;
+      };
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+  // Video modal
+  function openVideo(id) {
+    const modal = document.getElementById('videoModal');
+    const frame = document.getElementById('modalFrame');
+    frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideoBtn() {
+    const modal = document.getElementById('videoModal');
+    const frame = document.getElementById('modalFrame');
+    frame.src = '';
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeVideo(e) {
+    if (e.target === document.getElementById('videoModal')) closeVideoBtn();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideoBtn(); });
+
+  // Form
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.submit-btn');
+    btn.textContent = '✓ Mensaje enviado';
+    btn.style.background = 'linear-gradient(135deg,#2d8a4e,#1a5e32)';
+    setTimeout(() => {
+      btn.textContent = 'Enviar mensaje →';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>
