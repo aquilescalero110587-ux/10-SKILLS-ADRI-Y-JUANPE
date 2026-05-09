@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee Time Nicaragua</title>
+</head>
+<body>
+  <!-- Widget de Netlify Identity: intercepta invite_token, confirmation_token, etc. -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    var identityTokens = ['invite_token', 'confirmation_token', 'recovery_token', 'email_change_token'];
+    var hash = window.location.hash;
+    var hasToken = identityTokens.some(function(token) { return hash.indexOf(token) !== -1; });
+
+    if (window.netlifyIdentity) {
+      // Después de hacer login, ir al CMS
+      window.netlifyIdentity.on('init', function(user) {
+        if (!user) {
+          window.netlifyIdentity.on('login', function() {
+            document.location.href = '/admin/';
+          });
+        }
+      });
+    }
+
+    // Si no hay token de identidad, redirigir a la web principal
+    if (!hasToken) {
+      window.location.replace('/web-podcastcoffeetime-nicaragua.html');
+    }
+  </script>
+</body>
+</html>
