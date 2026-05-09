@@ -1,5 +1,9 @@
 [build]
   publish = "kit-instagram-web"
+  command  = ""
+
+[build.environment]
+  NODE_VERSION = "20"
 
 [[headers]]
   for = "/admin/*"
