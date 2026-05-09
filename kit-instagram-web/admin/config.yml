@@ -1,0 +1,66 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: es
+
+media_folder: "kit-instagram-web/assets/blog"
+public_folder: "/assets/blog"
+
+collections:
+  - name: "blog"
+    label: "Artículos del Blog"
+    label_singular: "Artículo"
+    folder: "kit-instagram-web/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "blog.html"
+    fields:
+      - label: "Título"
+        name: "title"
+        widget: "string"
+        hint: "Título del artículo"
+
+      - label: "Fecha de publicación"
+        name: "date"
+        widget: "datetime"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        format: "YYYY-MM-DD"
+
+      - label: "Categoría"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Música", value: "Música" }
+          - { label: "Emprendimiento", value: "Emprendimiento" }
+          - { label: "Podcasting", value: "Podcasting" }
+          - { label: "Cultura", value: "Cultura" }
+          - { label: "Entrevistas", value: "Entrevistas" }
+
+      - label: "Extracto"
+        name: "excerpt"
+        widget: "text"
+        hint: "Breve descripción que aparece en la tarjeta del blog (2-3 líneas)"
+
+      - label: "Tiempo de lectura"
+        name: "reading_time"
+        widget: "string"
+        default: "5 min"
+        hint: "Ejemplo: 4 min"
+
+      - label: "Artículo destacado"
+        name: "featured"
+        widget: "boolean"
+        default: false
+        hint: "Activa para mostrarlo en la sección principal del blog"
+
+      - label: "Imagen destacada"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Imagen que aparece en la tarjeta y en la cabecera del artículo"
+
+      - label: "Contenido"
+        name: "body"
+        widget: "markdown"
