@@ -655,6 +655,59 @@
       .metrics-grid { grid-template-columns:repeat(2,1fr); }
       .episodes-header { flex-direction:column; gap:1rem; align-items:flex-start; }
     }
+
+    /* ── BLOG PREVIEW ── */
+    .blog-preview { padding:6rem 3rem; background:var(--bg-2); }
+    .blog-preview-inner { max-width:1200px; margin:0 auto; }
+    .blog-preview-header {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem; margin-bottom:2.5rem;
+    }
+    .blog-preview-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:1.5px;
+      background:var(--border);
+    }
+    .blog-preview-card {
+      background:var(--bg);
+      padding:2rem;
+      display:flex; flex-direction:column; gap:.8rem;
+      text-decoration:none; color:var(--text);
+      transition:background .25s;
+      position:relative; overflow:hidden;
+    }
+    .blog-preview-card::before {
+      content:''; position:absolute;
+      bottom:0; left:0; right:0; height:2px;
+      background:var(--gold);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform .3s;
+    }
+    .blog-preview-card:hover { background:var(--bg-2); }
+    .blog-preview-card:hover::before { transform:scaleX(1); }
+    .bpc-cat { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); }
+    .bpc-title { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:400; line-height:1.3; }
+    .bpc-excerpt { font-size:.85rem; color:var(--muted); line-height:1.7; flex:1; }
+    .bpc-footer {
+      display:flex; align-items:center; justify-content:space-between;
+      padding-top:.8rem; border-top:1px solid var(--border);
+      font-size:.7rem; color:var(--muted);
+    }
+    .bpc-arrow { color:var(--gold); transition:transform .2s; }
+    .blog-preview-card:hover .bpc-arrow { transform:translateX(4px); }
+    .blog-preview-cta {
+      font-size:.75rem; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--gold); text-decoration:none;
+      border:1px solid var(--border); padding:.55rem 1.3rem;
+      transition:all .2s; white-space:nowrap;
+    }
+    .blog-preview-cta:hover { border-color:var(--gold); background:rgba(201,168,76,.06); }
+    @media(max-width:900px){ .blog-preview-grid { grid-template-columns:1fr 1fr; } }
+    @media(max-width:600px){
+      .blog-preview-grid { grid-template-columns:1fr; }
+      .blog-preview { padding:4rem 1.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -1208,6 +1261,22 @@
   </div>
 </section>
 
+<!-- ════════ BLOG PREVIEW ════════ -->
+<section id="blog" class="blog-preview">
+  <div class="blog-preview-inner">
+    <div class="blog-preview-header">
+      <div>
+        <div class="section-label reveal">Del blog</div>
+        <h2 class="section-title reveal">Últimos <span style="color:var(--gold)">artículos</span></h2>
+      </div>
+      <a href="blog.html" class="blog-preview-cta reveal">Ver todos →</a>
+    </div>
+    <div id="blog-cards" class="blog-preview-grid">
+      <!-- tarjetas generadas desde posts/index.json -->
+    </div>
+  </div>
+</section>
+
 <!-- ════════ FOOTER ════════ -->
 <footer>
   <div class="footer-inner">
@@ -1285,6 +1354,35 @@
     if (e.target === document.getElementById('videoModal')) closeVideoBtn();
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideoBtn(); });
+
+  // Blog preview: carga los 3 artículos más recientes desde posts/index.json
+  fetch('/posts/index.json')
+    .then(r => r.json())
+    .then(posts => {
+      const top3 = posts
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 3);
+      const grid = document.getElementById('blog-cards');
+      if (!grid || !top3.length) return;
+      grid.innerHTML = top3.map(p => {
+        const fecha = new Date(p.date + 'T12:00:00')
+          .toLocaleDateString('es-NI', { day:'numeric', month:'long', year:'numeric' });
+        return `<a href="blog.html" class="blog-preview-card reveal">
+          <div class="bpc-cat">${p.category}</div>
+          <h3 class="bpc-title">${p.title}</h3>
+          <p class="bpc-excerpt">${p.excerpt}</p>
+          <div class="bpc-footer">
+            <span>${fecha} &middot; ${p.reading_time}</span>
+            <span class="bpc-arrow">→</span>
+          </div>
+        </a>`;
+      }).join('');
+      grid.querySelectorAll('.blog-preview-card').forEach(el => revealObs.observe(el));
+    })
+    .catch(() => {
+      const s = document.getElementById('blog');
+      if (s) s.style.display = 'none';
+    });
 
   // Form
   function handleSubmit(e) {
